@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Smart Home',
       theme: ThemeData(
         // This is the theme of your application.
@@ -27,7 +28,6 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: ''),
       routes: {
-        '/': (context) => MyHomePage(title: ''),
         '/settings': (context) => const SettingsPage(),
       },
     );
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              '',
             ),
             Text(
               '',
@@ -117,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // ), // This trailing comma makes auto-formatting nicer for build methods.
       drawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.zero,
           children: [
             ListTile(
               title: const Text("Settings"),
