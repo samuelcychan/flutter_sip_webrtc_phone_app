@@ -2,8 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 import 'pages/SettingsPage.dart';
+
+const MethodChannel methodChannel =
+    MethodChannel("com.intellex.hometek.smart_home/isGmsAvailable");
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -13,8 +17,23 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
+Future<bool> isGMSAvailable() async {
+  bool status = false;
+  try {
+    status = await methodChannel.invokeMethod("isGmsAvailable");
+    // ignore: empty_catches
+  } on PlatformException {}
+  if (status) {
+    debugPrint("GMS is available");
+  } else {
+    debugPrint("GMS is not available");
+  }
+  return status;
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await isGMSAvailable();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await FirebaseMessaging.instance.requestPermission(
