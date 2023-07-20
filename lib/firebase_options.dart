@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,17 +49,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyADUWE8JC5QJsGnlFjdEg8enV9aieU4Vck',
-    appId: '1:490641957402:web:6b4f2ce66534213a4be7a3',
-    messagingSenderId: '490641957402',
-    projectId: 'hometek-d4f7f',
-    authDomain: 'hometek-d4f7f.firebaseapp.com',
-    databaseURL: 'https://hometek-d4f7f.firebaseio.com',
-    storageBucket: 'hometek-d4f7f.appspot.com',
-    measurementId: 'G-E6HZNPGQ76',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyANB4DCntrgdCN-ybwP_XnTfL6aSpZXBgE',
     appId: '1:490641957402:android:8e89756d1f9eefcb4be7a3',
@@ -65,18 +60,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB5HBlf9fk0tvt_tjmnLpXCUsNGX3laaws',
-    appId: '1:490641957402:ios:39b19253b203f8684be7a3',
-    messagingSenderId: '490641957402',
-    projectId: 'hometek-d4f7f',
-    databaseURL: 'https://hometek-d4f7f.firebaseio.com',
-    storageBucket: 'hometek-d4f7f.appspot.com',
-    iosClientId: '490641957402-saq91ubirpinmc66v3iedm4v030ql3lu.apps.googleusercontent.com',
-    iosBundleId: 'com.intellex.hometek.smartHome',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB5HBlf9fk0tvt_tjmnLpXCUsNGX3laaws',
-    appId: '1:490641957402:ios:39b19253b203f8684be7a3',
+    appId: '1:490641957402:ios:ad153931dab18cd34be7a3',
     messagingSenderId: '490641957402',
     projectId: 'hometek-d4f7f',
     databaseURL: 'https://hometek-d4f7f.firebaseio.com',
