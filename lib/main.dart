@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
-import 'pages/SettingsPage.dart';
+import 'pages/Settings.dart';
 
 const MethodChannel methodChannel =
     MethodChannel("com.intellex.hometek.smart_home/isGmsAvailable");
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: ''),
       routes: {
-        '/settings': (context) => const SettingsPage(),
+        '/settings': (context) => const SettingsWidget(),
       },
     );
   }
