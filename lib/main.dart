@@ -1,22 +1,56 @@
 import 'dart:io';
 
+import 'package:callkeep/callkeep.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
 import 'pages/Settings.dart';
 
 const MethodChannel methodChannel =
     MethodChannel("com.intellex.hometek.smart_home/isGmsAvailable");
 
+final FlutterCallkeep callKeepInst = FlutterCallkeep();
+bool callKeepInitialized = false;
+
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  if (kDebugMode) {
-    print(message.data);
+  var callerId = message.data['caller_id'];
+  var callerName = message.data['caller_name'];
+  var hasVideo = message.data['has_video'] == "true";
+  var uuid = message.data['uuid'] ?? const Uuid().v4();
+  callKeepInst.on(CallKeepPerformAnswerCallAction(),
+      (CallKeepPerformAnswerCallAction e) {
+    callKeepInst.setCurrentCallActive(uuid);
+  });
+  Map<String, dynamic> setupJson = {
+    "ios": {
+      "appName": "Smart Home",
+    },
+    "android": {
+      "alertTitle": "Permissions required",
+      "alertDescription":
+          "This application needs to access your phone accounts",
+      "cancelButton": "Cancel",
+      "okButton": "ok",
+      "foregroundService": {
+        "channelId": "com.intellex.hometek",
+        "channelName": "Smart Home Service",
+        "notificationTitle": "Call Service is running in background",
+        "notificationIcon": "",
+      },
+    },
+  };
+  if (!callKeepInitialized) {
+    callKeepInst.setup(null, setupJson, backgroundMode: true);
   }
+  callKeepInitialized = true;
+  callKeepInst.displayIncomingCall(uuid, callerId,
+      localizedCallerName: callerName, hasVideo: hasVideo);
+  callKeepInst.backToForeground();
 }
 
 Future<bool> isGMSAvailable() async {
