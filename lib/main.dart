@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -33,7 +35,9 @@ Future<bool> isGMSAvailable() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await isGMSAvailable();
+  if (Platform.isAndroid) {
+    await isGMSAvailable();
+  }
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await FirebaseMessaging.instance.requestPermission(
