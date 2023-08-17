@@ -42,7 +42,16 @@ dependencies:
   firebase_messaging: ^14.6.5
   callkeep: ^0.3.3
   uuid: ^3.0.7
-  sip_ua: ^0.5.8
+  sip_ua:
+    path: ../dart-sip-ua
+  get: ^4.6.5
+  get_storage: ^2.1.1
+  device_info_plus: ^9.0.3
+  package_info_plus: ^4.1.0
+  permission_handler_platform_interface: ^3.11.3
+  webrtc_interface: ^1.1.1
+  permission_handler: ^10.4.3
+  flutter_webrtc: ^0.9.40
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
