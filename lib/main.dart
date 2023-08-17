@@ -5,6 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:sip_ua/sip_ua.dart';
+import 'package:smart_home/controllers/state_controller.dart';
+import 'package:smart_home/pages/Register.dart';
 import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
 import 'pages/Settings.dart';
@@ -83,19 +88,25 @@ Future<void> main() async {
     provisional: false,
     sound: true,
   );
+  await GetStorage.init();
   final fcmToken = await FirebaseMessaging.instance.getToken();
+
+  GetStorage().write('token', fcmToken);
   debugPrint(fcmToken);
   // add profiling trace
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final controller = Get.put(StateController());
+  final SIPUAHelper helper = SIPUAHelper();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    controller.token = GetStorage().read('token').toString();
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart Home',
       theme: ThemeData(
@@ -112,7 +123,8 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: ''),
       routes: {
-        '/settings': (context) => const SettingsWidget(),
+        'settings': (context) => const SettingsWidget(),
+        'register': (context) => RegisterWidget(helper),
       },
     );
   }
@@ -205,8 +217,17 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: const Text("Settings"),
               onTap: () {
-                //add routel page
                 Navigator.pop(context);
+                Navigator.of(context, rootNavigator: false)
+                    .pushNamed('settings');
+              },
+            ),
+            ListTile(
+              title: const Text("Register"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context, rootNavigator: false)
+                    .pushNamed('register');
               },
             )
           ],
