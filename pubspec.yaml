@@ -52,6 +52,9 @@ dependencies:
   webrtc_interface: ^1.1.1
   permission_handler: ^10.4.3
   flutter_webrtc: ^0.9.40
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
@@ -70,6 +73,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

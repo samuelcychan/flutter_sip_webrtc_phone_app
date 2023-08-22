@@ -5,15 +5,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sip_ua/sip_ua.dart';
 import 'package:smart_home/controllers/state_controller.dart';
 import 'package:smart_home/pages/register_page.dart';
+import 'package:smart_home/pages/settings_page.dart';
 import 'package:smart_home/pages/call_screen.dart';
 import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
-import 'pages/Settings.dart';
 
 const MethodChannel methodChannel =
     MethodChannel("com.intellex.hometek.smart_home/isGmsAvailable");
@@ -110,6 +112,13 @@ class MyApp extends StatelessWidget {
     controller.token = GetStorage().read('token').toString();
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en'), Locale('zh', 'TW')],
       title: 'Smart Home',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -182,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           children: [
             ListTile(
-              title: const Text("Settings"),
+              title: Text(AppLocalizations.of(context)!.settings_menu),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context, rootNavigator: false)
@@ -190,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text("Register"),
+              title: Text(AppLocalizations.of(context)!.register_menu),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context, rootNavigator: false)
@@ -198,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text("CallScreen"),
+              title: Text(AppLocalizations.of(context)!.callscreen_menu),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context, rootNavigator: false)

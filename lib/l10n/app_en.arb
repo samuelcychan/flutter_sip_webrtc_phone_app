@@ -1,0 +1,18 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "settings_menu": "Settings",
+  "@settings_menu": {
+    "description": "The option of the hamburger menu to the app settings."
+  },
+  "register_menu": "Register",
+  "@register_menu": {
+    "description": "The option of the hamburger menu to the register settings."
+  },
+  "callscreen_menu": "Call",
+  "@callscreen_menu": {
+    "description": "The option of the hamburger menu to the register settings."
+  }
+}
