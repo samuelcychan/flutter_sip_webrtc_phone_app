@@ -16,6 +16,7 @@ import 'package:smart_home/pages/settings_page.dart';
 import 'package:smart_home/pages/call_screen.dart';
 import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
+import 'dart:developer';
 
 const MethodChannel methodChannel =
     MethodChannel("com.intellex.hometek.smart_home/isGmsAvailable");
@@ -57,8 +58,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     callKeepInst.setup(null, setupJson, backgroundMode: true);
   }
   callKeepInitialized = true;
-  callKeepInst.displayIncomingCall(uuid, callerId,
-      localizedCallerName: callerName, hasVideo: hasVideo);
+  callKeepInst.displayIncomingCall(uuid, "sip:1000@172.24.245.50",
+      localizedCallerName: "test", hasVideo: hasVideo);
   callKeepInst.backToForeground();
 }
 
@@ -92,6 +93,41 @@ Future<void> main() async {
     provisional: false,
     sound: true,
   );
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print("_firebaseMessagingBackgroundHandler");
+    var callerId = message.data['caller_id'];
+    var callerName = message.data['caller_name'];
+    var hasVideo = message.data['has_video'] == "true";
+    var uuid = message.data['uuid'] ?? const Uuid().v4();
+    callKeepInst.on(CallKeepPerformAnswerCallAction(),
+        (CallKeepPerformAnswerCallAction e) {
+      callKeepInst.setCurrentCallActive(uuid);
+    });
+    Map<String, dynamic> setupJson = {
+      "ios": {
+        "appName": "Smart Home",
+      },
+      "android": {
+        "alertTitle": "Permissions required",
+        "alertDescription":
+            "This application needs to access your phone accounts",
+        "cancelButton": "Cancel",
+        "okButton": "ok",
+        "foregroundService": {
+          "channelId": "com.intellex.hometek",
+          "channelName": "Smart Home Service",
+          "notificationTitle": "Call Service is running in background",
+          "notificationIcon": "",
+        },
+      },
+    };
+    if (!callKeepInitialized) {
+      callKeepInst.setup(null, setupJson, backgroundMode: false);
+    }
+    callKeepInitialized = true;
+    callKeepInst.displayIncomingCall(uuid, callerId,
+        localizedCallerName: callerName, hasVideo: hasVideo);
+  });
   await GetStorage.init();
   final fcmToken = await FirebaseMessaging.instance.getToken();
 
