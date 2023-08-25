@@ -26,17 +26,19 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) Camera Usage!</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) Microphone Usage!</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>processing</string>
 		<string>remote-notification</string>
+		<string>voip</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) Camera Usage!</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) Microphone Usage!</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
